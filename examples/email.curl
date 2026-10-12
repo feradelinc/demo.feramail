@@ -1,0 +1,7 @@
+# Supply authorized instance/token securely; keep a reviewed payload outside the repository.
+# This POST can transmit real email. Verify recipients and configuration before executing.
+curl --request POST "$EMAIL_API_URL/api/v1/send" \
+  --header "instance: $FERA_INSTANCE_UUID" \
+  --header "x-auth-token: $FERA_AUTH_TOKEN" \
+  --header 'content-type: application/json' \
+  --data-binary @reviewed-email-payload.json

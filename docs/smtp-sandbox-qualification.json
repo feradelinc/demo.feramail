@@ -1,0 +1,13 @@
+{
+  "status": "PASSED",
+  "source": "docs/contracts/runtime-send-service.js",
+  "transport": "Actual Nodemailer 6.10.1",
+  "sink": "Ephemeral in-memory loopback capture; never relays",
+  "capturedMessages": 2,
+  "rawSMTPSubmissionVerified": true,
+  "PDFAndCIDMIMEVerified": true,
+  "optOutAndDuplicatePreventionVerified": true,
+  "realRecipientsContacted": 0,
+  "productionCredentialUse": false,
+  "authenticatedLiveAPI": false
+}

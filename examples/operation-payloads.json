@@ -1,0 +1,227 @@
+[
+  {
+    "operationId": "email_post_configurations_createOrUpdate_0",
+    "method": "POST",
+    "route": "/api/v1/configurations",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID",
+      "content-type": "application/json"
+    },
+    "permission": "EDIT.CONFIGURATION",
+    "bodyFields": [
+      "uuid",
+      "owner",
+      "name",
+      "host",
+      "port",
+      "secure",
+      "user",
+      "password"
+    ],
+    "output": "{uuid,success}",
+    "errors": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "operationId": "email_get_configurations_get_1",
+    "method": "GET",
+    "route": "/api/v1/configurations",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "permission": "VIEW.CONFIGURATION",
+    "bodyFields": [],
+    "output": "Array of uuid/name/host/port/secure/user; password excluded",
+    "errors": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "operationId": "email_get_configurations_get_2",
+    "method": "GET",
+    "route": "/api/v1/configurations/n/{name}",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "permission": "VIEW.CONFIGURATION",
+    "bodyFields": [],
+    "output": "Array of uuid/name/host/port/secure/user; password excluded",
+    "errors": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "operationId": "email_delete_configurations_destroy_3",
+    "method": "DELETE",
+    "route": "/api/v1/configurations/{uuid}",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "permission": "EDIT.CONFIGURATION",
+    "bodyFields": [],
+    "output": "{success}",
+    "errors": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "operationId": "email_post_templates_createOrUpdate_4",
+    "method": "POST",
+    "route": "/api/v1/templates",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID",
+      "content-type": "application/json"
+    },
+    "permission": "EDIT.TEMPLATE",
+    "bodyFields": [
+      "uuid",
+      "category",
+      "name",
+      "from",
+      "replyTo",
+      "subject",
+      "html",
+      "meta"
+    ],
+    "output": "{uuid,success}",
+    "errors": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "operationId": "email_post_templates_register_5",
+    "method": "POST",
+    "route": "/api/v1/templates/r/i/{uuid}",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID",
+      "content-type": "application/json"
+    },
+    "permission": "EDIT.TEMPLATE",
+    "bodyFields": [
+      "name"
+    ],
+    "output": "{success,data:{template fields,parentUuid}}",
+    "errors": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "operationId": "email_get_templates_search_6",
+    "method": "GET",
+    "route": "/api/v1/templates/n/{named}/o/{owner}/f/{fields}",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "permission": "VIEW.TEMPLATE",
+    "bodyFields": [],
+    "output": "Template object; current runtime ignores requested attributes",
+    "errors": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "operationId": "email_get_templates_global_7",
+    "method": "GET",
+    "route": "/api/v1/templates/g",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "permission": "VIEW.TEMPLATE",
+    "bodyFields": [],
+    "output": "{success,items}; success can be false for an empty global list",
+    "errors": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "operationId": "email_get_templates_get_8",
+    "method": "GET",
+    "route": "/api/v1/templates",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "permission": "VIEW.TEMPLATE",
+    "bodyFields": [],
+    "output": "Array of source-selected template fields",
+    "errors": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "operationId": "email_get_templates_get_9",
+    "method": "GET",
+    "route": "/api/v1/templates/{uuid}",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "permission": "VIEW.TEMPLATE",
+    "bodyFields": [],
+    "output": "Array of source-selected template fields",
+    "errors": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "operationId": "email_delete_templates_destroy_10",
+    "method": "DELETE",
+    "route": "/api/v1/templates/{uuid}",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "permission": "EDIT.TEMPLATE",
+    "bodyFields": [],
+    "output": "{success}",
+    "errors": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "operationId": "email_post_send_send_11",
+    "method": "POST",
+    "route": "/api/v1/send",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID",
+      "content-type": "application/json"
+    },
+    "permission": "CAN.SEND",
+    "bodyFields": [
+      "owner",
+      "configuration",
+      "name",
+      "xml",
+      "recipient",
+      "to",
+      "cc",
+      "bcc",
+      "from",
+      "display",
+      "subject",
+      "body",
+      "json",
+      "custom",
+      "unsubscribeUrl",
+      "optOutUrl",
+      "emailCampaignOptOutUrl",
+      "attachments"
+    ],
+    "output": "{success,info?,rendered?,error?}; provider acceptance is not final delivery",
+    "errors": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "operationId": "email_get_send_preflight_12",
+    "method": "GET",
+    "route": "/api/v1/send/preflight",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "permission": "CAN.SEND",
+    "bodyFields": [],
+    "output": "{success,configurationReady,templateAvailable}",
+    "errors": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "operationId": "email_get_send_receipt_13",
+    "method": "GET",
+    "route": "/api/v1/send/operations/{operationId}",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "permission": "CAN.SEND",
+    "bodyFields": [],
+    "output": "{success,operationId,state,payloadSha256,clientBinding,info?}",
+    "errors": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  }
+]

@@ -1,0 +1,39 @@
+diff --git a/models/Template.js b/models/Template.js
+index cfe9b77..413f7dd 100644
+--- a/models/Template.js
++++ b/models/Template.js
+@@ -5,8 +5,8 @@ const { transform } = require("../support/rendering");
+ const Log = require("./Log"); // keep if used by hooks elsewhere
+ 
+ class Template extends Model {
+-  static async byIndex({ ownerUuid, name }) {
+-    return Template.findOne({ where: { ownerUuid, name } });
++  static async byIndex({ ownerUuid, name, attributes }) {
++    return Template.findOne({ where: { ownerUuid, name }, ...(attributes ? { attributes } : {}) });
+   }
+ 
+   static escapeXml(value = "") {
+diff --git a/routes/api/v1/configuration/service.js b/routes/api/v1/configuration/service.js
+index 5ffbafc..685c222 100644
+--- a/routes/api/v1/configuration/service.js
++++ b/routes/api/v1/configuration/service.js
+@@ -25,7 +25,8 @@ exports.createOrUpdate = async (req) => {
+         item.port = port;
+         item.secure = secure;
+         item.user = user;
+-        item.password = password;
++        // Omission is not credential replacement. Explicit values retain existing semantics.
++        if (password !== undefined) item.password = password;
+         await item.save();
+     }
+     
+diff --git a/test/studio-contract-corrections.test.js b/test/studio-contract-corrections.test.js
+new file mode 100644
+index 0000000..d6a0b89
+--- /dev/null
++++ b/test/studio-contract-corrections.test.js
+@@ -0,0 +1,4 @@
++const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
++function load(file,mocks){const exports={},module={exports};vm.runInNewContext(fs.readFileSync(path.join(__dirname,'..',file),'utf8'),{module,exports,require:n=>{assert(n in mocks,n);return mocks[n];}});return module.exports;}
++test('configuration update preserves omitted password and signed owner authorization; explicit replacement still applies',async()=>{const item={uuid:'profile',password:'original',save:async()=>{}},owners=[];const service=load('routes/api/v1/configuration/service.js',{'uuid':{v4:()=>''},'./model':{Configuration:{findOne:async()=>item}},'../../../../support/string':{isGuid:()=>true},'../../../../support/service':{record:async()=>{}},'./constants':{PERMISSION_EDIT:'EDIT.CONFIGURATION'},'../../../../support/owner-authorization':{authorizeOwner:async(req,owner)=>{owners.push(owner);return req;}}});const req={instance:'signed-managed-identity',body:{uuid:'profile',owner:'signed-owner',name:'SMTP',host:'smtp.example.invalid',port:587,secure:true,user:'username'}};await service.createOrUpdate(req);assert.equal(item.password,'original');assert.deepEqual(owners,['signed-owner']);await service.createOrUpdate({...req,body:{...req.body,password:'replacement'}});assert.equal(item.password,'replacement');});
++test('template byIndex forwards an explicit projection, preserving full lookup when omitted',async()=>{let query;class Model{static init(){}static findOne(q){query=q;return q;}}const dataTypes=new Proxy({},{get:()=>Object.assign(()=>({}),{UUID:'uuid'})});const Template=load('models/Template.js',{sequelize:{Model,DataTypes:dataTypes},'../config/db':{},'../support/rendering':{},'./Log':{}});await Template.byIndex({ownerUuid:'owner',name:'Name',attributes:['uuid','name']});assert.deepEqual([...query.attributes],['uuid','name']);assert.equal(query.where.ownerUuid,'owner');await Template.byIndex({ownerUuid:'owner',name:'Name'});assert.equal(query.attributes,undefined);});

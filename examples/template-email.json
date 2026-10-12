@@ -1,0 +1,1 @@
+{"configuration":"APPROVED_SMTP_PROFILE","name":"SESSION_PREFIX Invoice","recipient":"VERIFIED_ALLOWLIST_RECIPIENT","xml":"<data><Customer><Name>Avery Morgan</Name></Customer><Invoice><Number>DEMO-1042</Number><Amount>$425.00</Amount><Due>November 15, 2026</Due></Invoice></data>","attachments":[],"emailCampaignOptOutUrl":"https://example.invalid/preferences"}
