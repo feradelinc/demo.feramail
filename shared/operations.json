@@ -1,0 +1,1786 @@
+[
+  {
+    "id": "email_post_configurations_createOrUpdate_0",
+    "method": "POST",
+    "route": "/api/v1/configurations",
+    "group": "configurations",
+    "handler": "createOrUpdate",
+    "summary": "Save configurations",
+    "permission": "EDIT.CONFIGURATION",
+    "parameters": [],
+    "bodyFields": [
+      "uuid",
+      "owner",
+      "name",
+      "host",
+      "port",
+      "secure",
+      "user",
+      "password"
+    ],
+    "description": "Implements controller.createOrUpdate in routes/api/v1/configuration/routes.js:8. The authenticated owner boundary enforces view/edit permission and never returns SMTP passwords; templates and profiles are isolated by instance owner.",
+    "schema": {
+      "$ref": "#/components/schemas/EmailConfiguration"
+    },
+    "source": "configuration/routes.js",
+    "supplemental": false,
+    "internal": false,
+    "deployment": "qualified release v0.1.0-api-release.20261011.83",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID",
+      "content-type": "application/json"
+    },
+    "aliases": [
+      "/api/configurations"
+    ],
+    "documentedResponses": {
+      "200": {
+        "description": "The source-traced Email handler completed and returned its profile, template, send, lifecycle, or shared-owner result.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailResult"
+            },
+            "example": {
+              "success": true,
+              "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+              "items": [],
+              "data": {
+                "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+                "parentUuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df"
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Validation, sender/recipient, template registration, fields JSON, or payload rules rejected the request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "The x-auth-token or lifecycle HMAC is invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Send/view/edit, managed-product, owner, or lifecycle sender permission is missing.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "The owner-scoped configuration, template, or import source was not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Persistence, template build, SMTP transport, lifecycle, or provisioning failed unexpectedly.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sourceOutput": "{uuid,success}",
+    "errorBehavior": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "id": "email_get_configurations_get_1",
+    "method": "GET",
+    "route": "/api/v1/configurations",
+    "group": "configurations",
+    "handler": "get",
+    "summary": "Read configurations",
+    "permission": "VIEW.CONFIGURATION",
+    "parameters": [],
+    "bodyFields": [],
+    "description": "Implements controller.get in routes/api/v1/configuration/routes.js:9. The authenticated owner boundary enforces view/edit permission and never returns SMTP passwords; templates and profiles are isolated by instance owner.",
+    "schema": null,
+    "source": "configuration/routes.js",
+    "supplemental": false,
+    "internal": false,
+    "deployment": "qualified release v0.1.0-api-release.20261011.83",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "aliases": [
+      "/api/configurations"
+    ],
+    "documentedResponses": {
+      "200": {
+        "description": "The source-traced Email handler completed and returned its profile, template, send, lifecycle, or shared-owner result.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailResult"
+            },
+            "example": {
+              "success": true,
+              "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+              "items": [],
+              "data": {
+                "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+                "parentUuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df"
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Validation, sender/recipient, template registration, fields JSON, or payload rules rejected the request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "The x-auth-token or lifecycle HMAC is invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Send/view/edit, managed-product, owner, or lifecycle sender permission is missing.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "The owner-scoped configuration, template, or import source was not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Persistence, template build, SMTP transport, lifecycle, or provisioning failed unexpectedly.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sourceOutput": "Array of uuid/name/host/port/secure/user; password excluded",
+    "errorBehavior": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "id": "email_get_configurations_get_2",
+    "method": "GET",
+    "route": "/api/v1/configurations/n/{name}",
+    "group": "configurations",
+    "handler": "get",
+    "summary": "Read configurations",
+    "permission": "VIEW.CONFIGURATION",
+    "parameters": [
+      "name"
+    ],
+    "bodyFields": [],
+    "description": "Implements controller.get in routes/api/v1/configuration/routes.js:10. The authenticated owner boundary enforces view/edit permission and never returns SMTP passwords; templates and profiles are isolated by instance owner.",
+    "schema": null,
+    "source": "configuration/routes.js",
+    "supplemental": false,
+    "internal": false,
+    "deployment": "qualified release v0.1.0-api-release.20261011.83",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "aliases": [
+      "/api/configurations/n/{name}"
+    ],
+    "documentedResponses": {
+      "200": {
+        "description": "The source-traced Email handler completed and returned its profile, template, send, lifecycle, or shared-owner result.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailResult"
+            },
+            "example": {
+              "success": true,
+              "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+              "items": [],
+              "data": {
+                "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+                "parentUuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df"
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Validation, sender/recipient, template registration, fields JSON, or payload rules rejected the request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "The x-auth-token or lifecycle HMAC is invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Send/view/edit, managed-product, owner, or lifecycle sender permission is missing.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "The owner-scoped configuration, template, or import source was not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Persistence, template build, SMTP transport, lifecycle, or provisioning failed unexpectedly.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sourceOutput": "Array of uuid/name/host/port/secure/user; password excluded",
+    "errorBehavior": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "id": "email_delete_configurations_destroy_3",
+    "method": "DELETE",
+    "route": "/api/v1/configurations/{uuid}",
+    "group": "configurations",
+    "handler": "destroy",
+    "summary": "Delete configurations",
+    "permission": "EDIT.CONFIGURATION",
+    "parameters": [
+      "uuid"
+    ],
+    "bodyFields": [],
+    "description": "Implements controller.destroy in routes/api/v1/configuration/routes.js:11. The authenticated owner boundary enforces view/edit permission and never returns SMTP passwords; templates and profiles are isolated by instance owner.",
+    "schema": null,
+    "source": "configuration/routes.js",
+    "supplemental": false,
+    "internal": false,
+    "deployment": "qualified release v0.1.0-api-release.20261011.83",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "aliases": [
+      "/api/configurations/{uuid}"
+    ],
+    "documentedResponses": {
+      "200": {
+        "description": "The source-traced Email handler completed and returned its profile, template, send, lifecycle, or shared-owner result.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailResult"
+            },
+            "example": {
+              "success": true,
+              "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+              "items": [],
+              "data": {
+                "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+                "parentUuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df"
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Validation, sender/recipient, template registration, fields JSON, or payload rules rejected the request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "The x-auth-token or lifecycle HMAC is invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Send/view/edit, managed-product, owner, or lifecycle sender permission is missing.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "The owner-scoped configuration, template, or import source was not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Persistence, template build, SMTP transport, lifecycle, or provisioning failed unexpectedly.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sourceOutput": "{success}",
+    "errorBehavior": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "id": "email_post_templates_createOrUpdate_4",
+    "method": "POST",
+    "route": "/api/v1/templates",
+    "group": "templates",
+    "handler": "createOrUpdate",
+    "summary": "Save templates",
+    "permission": "EDIT.TEMPLATE",
+    "parameters": [],
+    "bodyFields": [
+      "uuid",
+      "category",
+      "name",
+      "from",
+      "replyTo",
+      "subject",
+      "html",
+      "meta"
+    ],
+    "description": "Implements controller.createOrUpdate in routes/api/v1/template/routes.js:8. The authenticated owner boundary enforces view/edit permission and never returns SMTP passwords; templates and profiles are isolated by instance owner.",
+    "schema": {
+      "$ref": "#/components/schemas/EmailTemplate"
+    },
+    "source": "template/routes.js",
+    "supplemental": false,
+    "internal": false,
+    "deployment": "qualified release v0.1.0-api-release.20261011.83",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID",
+      "content-type": "application/json"
+    },
+    "aliases": [
+      "/api/templates"
+    ],
+    "documentedResponses": {
+      "200": {
+        "description": "The source-traced Email handler completed and returned its profile, template, send, lifecycle, or shared-owner result.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailResult"
+            },
+            "example": {
+              "success": true,
+              "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+              "items": [],
+              "data": {
+                "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+                "parentUuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df"
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Validation, sender/recipient, template registration, fields JSON, or payload rules rejected the request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "The x-auth-token or lifecycle HMAC is invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Send/view/edit, managed-product, owner, or lifecycle sender permission is missing.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "The owner-scoped configuration, template, or import source was not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Persistence, template build, SMTP transport, lifecycle, or provisioning failed unexpectedly.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sourceOutput": "{uuid,success}",
+    "errorBehavior": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "id": "email_post_templates_register_5",
+    "method": "POST",
+    "route": "/api/v1/templates/r/i/{uuid}",
+    "group": "templates",
+    "handler": "register",
+    "summary": "Import global template",
+    "permission": "EDIT.TEMPLATE",
+    "parameters": [
+      "uuid"
+    ],
+    "bodyFields": [
+      "name"
+    ],
+    "description": "Implements controller.register in routes/api/v1/template/routes.js:9. The authenticated owner boundary enforces view/edit permission and never returns SMTP passwords; templates and profiles are isolated by instance owner.",
+    "schema": {
+      "$ref": "#/components/schemas/EmailTemplate"
+    },
+    "source": "template/routes.js",
+    "supplemental": false,
+    "internal": false,
+    "deployment": "qualified release v0.1.0-api-release.20261011.83",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID",
+      "content-type": "application/json"
+    },
+    "aliases": [
+      "/api/templates/r/i/{uuid}"
+    ],
+    "documentedResponses": {
+      "200": {
+        "description": "The source-traced Email handler completed and returned its profile, template, send, lifecycle, or shared-owner result.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailResult"
+            },
+            "example": {
+              "success": true,
+              "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+              "items": [],
+              "data": {
+                "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+                "parentUuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df"
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Validation, sender/recipient, template registration, fields JSON, or payload rules rejected the request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "The x-auth-token or lifecycle HMAC is invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Send/view/edit, managed-product, owner, or lifecycle sender permission is missing.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "The owner-scoped configuration, template, or import source was not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Persistence, template build, SMTP transport, lifecycle, or provisioning failed unexpectedly.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sourceOutput": "{success,data:{template fields,parentUuid}}",
+    "errorBehavior": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "id": "email_get_templates_search_6",
+    "method": "GET",
+    "route": "/api/v1/templates/n/{named}/o/{owner}/f/{fields}",
+    "group": "templates",
+    "handler": "search",
+    "summary": "Search selected template fields",
+    "permission": "VIEW.TEMPLATE",
+    "parameters": [
+      "named",
+      "owner",
+      "fields"
+    ],
+    "bodyFields": [],
+    "description": "Implements controller.search in routes/api/v1/template/routes.js:10. The authenticated owner boundary enforces view/edit permission and never returns SMTP passwords; templates and profiles are isolated by instance owner.",
+    "schema": null,
+    "source": "template/routes.js",
+    "supplemental": false,
+    "internal": false,
+    "deployment": "qualified release v0.1.0-api-release.20261011.83",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "aliases": [
+      "/api/templates/n/{named}/o/{owner}/f/{fields}"
+    ],
+    "documentedResponses": {
+      "200": {
+        "description": "The source-traced Email handler completed and returned its profile, template, send, lifecycle, or shared-owner result.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailResult"
+            },
+            "example": {
+              "success": true,
+              "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+              "items": [],
+              "data": {
+                "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+                "parentUuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df"
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Validation, sender/recipient, template registration, fields JSON, or payload rules rejected the request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "The x-auth-token or lifecycle HMAC is invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Send/view/edit, managed-product, owner, or lifecycle sender permission is missing.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "The owner-scoped configuration, template, or import source was not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Persistence, template build, SMTP transport, lifecycle, or provisioning failed unexpectedly.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sourceOutput": "Template object; current runtime ignores requested attributes",
+    "errorBehavior": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "id": "email_get_templates_global_7",
+    "method": "GET",
+    "route": "/api/v1/templates/g",
+    "group": "templates",
+    "handler": "global",
+    "summary": "List global templates",
+    "permission": "VIEW.TEMPLATE",
+    "parameters": [],
+    "bodyFields": [],
+    "description": "Implements controller.global in routes/api/v1/template/routes.js:11. The authenticated owner boundary enforces view/edit permission and never returns SMTP passwords; templates and profiles are isolated by instance owner.",
+    "schema": null,
+    "source": "template/routes.js",
+    "supplemental": false,
+    "internal": false,
+    "deployment": "qualified release v0.1.0-api-release.20261011.83",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "aliases": [
+      "/api/templates/g"
+    ],
+    "documentedResponses": {
+      "200": {
+        "description": "The source-traced Email handler completed and returned its profile, template, send, lifecycle, or shared-owner result.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailResult"
+            },
+            "example": {
+              "success": true,
+              "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+              "items": [],
+              "data": {
+                "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+                "parentUuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df"
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Validation, sender/recipient, template registration, fields JSON, or payload rules rejected the request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "The x-auth-token or lifecycle HMAC is invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Send/view/edit, managed-product, owner, or lifecycle sender permission is missing.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "The owner-scoped configuration, template, or import source was not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Persistence, template build, SMTP transport, lifecycle, or provisioning failed unexpectedly.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sourceOutput": "{success,items}; success can be false for an empty global list",
+    "errorBehavior": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "id": "email_get_templates_get_8",
+    "method": "GET",
+    "route": "/api/v1/templates",
+    "group": "templates",
+    "handler": "get",
+    "summary": "Read templates",
+    "permission": "VIEW.TEMPLATE",
+    "parameters": [],
+    "bodyFields": [],
+    "description": "Implements controller.get in routes/api/v1/template/routes.js:12. The authenticated owner boundary enforces view/edit permission and never returns SMTP passwords; templates and profiles are isolated by instance owner.",
+    "schema": null,
+    "source": "template/routes.js",
+    "supplemental": false,
+    "internal": false,
+    "deployment": "qualified release v0.1.0-api-release.20261011.83",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "aliases": [
+      "/api/templates"
+    ],
+    "documentedResponses": {
+      "200": {
+        "description": "The source-traced Email handler completed and returned its profile, template, send, lifecycle, or shared-owner result.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailResult"
+            },
+            "example": {
+              "success": true,
+              "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+              "items": [],
+              "data": {
+                "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+                "parentUuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df"
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Validation, sender/recipient, template registration, fields JSON, or payload rules rejected the request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "The x-auth-token or lifecycle HMAC is invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Send/view/edit, managed-product, owner, or lifecycle sender permission is missing.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "The owner-scoped configuration, template, or import source was not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Persistence, template build, SMTP transport, lifecycle, or provisioning failed unexpectedly.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sourceOutput": "Array of source-selected template fields",
+    "errorBehavior": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "id": "email_get_templates_get_9",
+    "method": "GET",
+    "route": "/api/v1/templates/{uuid}",
+    "group": "templates",
+    "handler": "get",
+    "summary": "Read templates",
+    "permission": "VIEW.TEMPLATE",
+    "parameters": [
+      "uuid"
+    ],
+    "bodyFields": [],
+    "description": "Implements controller.get in routes/api/v1/template/routes.js:13. The authenticated owner boundary enforces view/edit permission and never returns SMTP passwords; templates and profiles are isolated by instance owner.",
+    "schema": null,
+    "source": "template/routes.js",
+    "supplemental": false,
+    "internal": false,
+    "deployment": "qualified release v0.1.0-api-release.20261011.83",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "aliases": [
+      "/api/templates/{uuid}"
+    ],
+    "documentedResponses": {
+      "200": {
+        "description": "The source-traced Email handler completed and returned its profile, template, send, lifecycle, or shared-owner result.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailResult"
+            },
+            "example": {
+              "success": true,
+              "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+              "items": [],
+              "data": {
+                "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+                "parentUuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df"
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Validation, sender/recipient, template registration, fields JSON, or payload rules rejected the request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "The x-auth-token or lifecycle HMAC is invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Send/view/edit, managed-product, owner, or lifecycle sender permission is missing.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "The owner-scoped configuration, template, or import source was not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Persistence, template build, SMTP transport, lifecycle, or provisioning failed unexpectedly.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sourceOutput": "Array of source-selected template fields",
+    "errorBehavior": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "id": "email_delete_templates_destroy_10",
+    "method": "DELETE",
+    "route": "/api/v1/templates/{uuid}",
+    "group": "templates",
+    "handler": "destroy",
+    "summary": "Delete templates",
+    "permission": "EDIT.TEMPLATE",
+    "parameters": [
+      "uuid"
+    ],
+    "bodyFields": [],
+    "description": "Implements controller.destroy in routes/api/v1/template/routes.js:14. The authenticated owner boundary enforces view/edit permission and never returns SMTP passwords; templates and profiles are isolated by instance owner.",
+    "schema": null,
+    "source": "template/routes.js",
+    "supplemental": false,
+    "internal": false,
+    "deployment": "qualified release v0.1.0-api-release.20261011.83",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "aliases": [
+      "/api/templates/{uuid}"
+    ],
+    "documentedResponses": {
+      "200": {
+        "description": "The source-traced Email handler completed and returned its profile, template, send, lifecycle, or shared-owner result.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailResult"
+            },
+            "example": {
+              "success": true,
+              "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+              "items": [],
+              "data": {
+                "uuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df",
+                "parentUuid": "715c9ebb-0470-11f1-a928-0ed2cd1b87df"
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Validation, sender/recipient, template registration, fields JSON, or payload rules rejected the request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "The x-auth-token or lifecycle HMAC is invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Send/view/edit, managed-product, owner, or lifecycle sender permission is missing.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "The owner-scoped configuration, template, or import source was not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Persistence, template build, SMTP transport, lifecycle, or provisioning failed unexpectedly.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sourceOutput": "{success}",
+    "errorBehavior": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "id": "email_post_send_send_11",
+    "method": "POST",
+    "route": "/api/v1/send",
+    "group": "send",
+    "handler": "send",
+    "summary": "Submit raw or template email",
+    "permission": "CAN.SEND",
+    "parameters": [],
+    "bodyFields": [
+      "owner",
+      "configuration",
+      "name",
+      "xml",
+      "recipient",
+      "to",
+      "cc",
+      "bcc",
+      "from",
+      "display",
+      "subject",
+      "body",
+      "json",
+      "custom",
+      "unsubscribeUrl",
+      "optOutUrl",
+      "emailCampaignOptOutUrl",
+      "attachments"
+    ],
+    "description": "Implements controller.send in routes/api/v1/send/routes.js:8. The authenticated sender requires SEND.EMAIL, resolves an owner-scoped SMTP profile and optional template, builds safe rendered output, appends campaign opt-out once, submits through Nodemailer, records success, and never returns attachment content or credentials.",
+    "schema": {
+      "$ref": "#/components/schemas/SendRequest"
+    },
+    "source": "send/routes.js",
+    "supplemental": false,
+    "internal": false,
+    "deployment": "qualified release v0.1.0-api-release.20261011.83",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID",
+      "content-type": "application/json"
+    },
+    "aliases": [
+      "/api/send"
+    ],
+    "documentedResponses": {
+      "200": {
+        "description": "The source-traced Email handler completed and returned its profile, template, send, lifecycle, or shared-owner result.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SendResult"
+            },
+            "example": {
+              "success": true,
+              "info": {
+                "messageId": "<fictional-message@example.test>",
+                "accepted": [
+                  "developer@example.com"
+                ]
+              },
+              "rendered": {
+                "template": "PASSWORD.RESET",
+                "from": "security@example.com",
+                "to": "developer@example.com",
+                "subject": "Reset your password",
+                "attachments": [
+                  {
+                    "filename": "instructions.pdf",
+                    "cid": null
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "400": {
+        "description": "Validation, sender/recipient, template registration, fields JSON, or payload rules rejected the request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "401": {
+        "description": "The x-auth-token or lifecycle HMAC is invalid.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "403": {
+        "description": "Send/view/edit, managed-product, owner, or lifecycle sender permission is missing.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "The owner-scoped configuration, template, or import source was not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "500": {
+        "description": "Persistence, template build, SMTP transport, lifecycle, or provisioning failed unexpectedly.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      },
+      "502": {
+        "description": "SMTP or dependent delivery infrastructure did not accept the message.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/EmailError"
+            },
+            "example": {
+              "success": false,
+              "message": "The email operation could not be completed.",
+              "error": {
+                "stage": "validation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sourceOutput": "{success,info?,rendered?,error?}; provider acceptance is not final delivery",
+    "errorBehavior": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "id": "email_get_send_preflight_12",
+    "method": "GET",
+    "route": "/api/v1/send/preflight",
+    "group": "send",
+    "handler": "preflight",
+    "summary": "Inspect send prerequisites",
+    "permission": "CAN.SEND",
+    "parameters": [],
+    "bodyFields": [],
+    "description": "Source-confirmed qualified runtime extension.",
+    "schema": null,
+    "source": "send/routes.js",
+    "supplemental": true,
+    "internal": false,
+    "deployment": "qualified release v0.1.0-api-release.20261011.83",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "aliases": [
+      "/api/send/preflight"
+    ],
+    "documentedResponses": null,
+    "sourceOutput": "{success,configurationReady,templateAvailable}",
+    "errorBehavior": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "id": "email_get_send_receipt_13",
+    "method": "GET",
+    "route": "/api/v1/send/operations/{operationId}",
+    "group": "send",
+    "handler": "receipt",
+    "summary": "Inspect qualified delivery operation",
+    "permission": "CAN.SEND",
+    "parameters": [
+      "operationId"
+    ],
+    "bodyFields": [],
+    "description": "Source-confirmed qualified runtime extension.",
+    "schema": null,
+    "source": "send/routes.js",
+    "supplemental": true,
+    "internal": false,
+    "deployment": "qualified release v0.1.0-api-release.20261011.83",
+    "headers": {
+      "x-auth-token": "Authenticated session JWT",
+      "instance": "Authenticated owner UUID"
+    },
+    "aliases": [
+      "/api/send/operations/{operationId}"
+    ],
+    "documentedResponses": null,
+    "sourceOutput": "{success,operationId,state,payloadSha256,clientBinding,info?}",
+    "errorBehavior": "Actual HTTP status and body preserved. Authentication/product/permission denials may be 401/403; bad input or missing resources are reported by the upstream controller. Send can return success:false under HTTP 200, and network/5xx submission outcomes are treated as uncertain with no automatic retry."
+  },
+  {
+    "id": "internal_provisioning",
+    "method": "POST",
+    "route": "/api/v1/internal/provisioning/license-product",
+    "group": "internal",
+    "summary": "provisioning (signed lifecycle)",
+    "internal": true,
+    "permission": "Privileged HMAC signed event",
+    "deployment": "main and qualified runtime"
+  },
+  {
+    "id": "internal_settings",
+    "method": "POST",
+    "route": "/api/v1/internal/settings/license-product",
+    "group": "internal",
+    "summary": "settings (signed lifecycle)",
+    "internal": true,
+    "permission": "Privileged HMAC signed event",
+    "deployment": "main and qualified runtime"
+  },
+  {
+    "id": "internal_deprovisioning",
+    "method": "POST",
+    "route": "/api/v1/internal/deprovisioning/license-product",
+    "group": "internal",
+    "summary": "deprovisioning (signed lifecycle)",
+    "internal": true,
+    "permission": "Privileged HMAC signed event",
+    "deployment": "main and qualified runtime"
+  },
+  {
+    "id": "internal_lifecycle",
+    "method": "POST",
+    "route": "/api/v1/internal/lifecycle/license-product",
+    "group": "internal",
+    "summary": "lifecycle (signed lifecycle)",
+    "internal": true,
+    "permission": "Privileged HMAC signed event",
+    "deployment": "main and qualified runtime"
+  },
+  {
+    "id": "internal_signature_owner",
+    "method": "POST",
+    "route": "/api/v1/internal/signature-owner/provision",
+    "group": "internal",
+    "summary": "Shared FeraSign email owner provisioning",
+    "internal": true,
+    "permission": "Internal authenticated provisioner; never public",
+    "deployment": "candidate and qualified runtime, absent from main"
+  }
+]

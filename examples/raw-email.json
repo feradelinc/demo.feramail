@@ -1,0 +1,1 @@
+{"configuration":"APPROVED_SMTP_PROFILE","from":"demo@example.invalid","display":"Northstar Consulting","to":"VERIFIED_ALLOWLIST_RECIPIENT","cc":"","bcc":"","subject":"Northstar invoice DEMO-1042","body":"<h1>Your fictional invoice</h1><p>$425.00, due November 15, 2026.</p><img src=\"cid:northstar-logo\"/>","attachments":[],"unsubscribeUrl":"https://example.invalid/preferences"}

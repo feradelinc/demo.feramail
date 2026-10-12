@@ -1,0 +1,12 @@
+* text=auto
+*.js text eol=lf
+*.jsx text eol=lf
+*.mjs text eol=lf
+*.css text eol=lf
+*.patch text eol=lf
+*.svg text eol=lf
+*.png binary
+*.pdf binary
+docs/contracts/* -text
+docs/contracts/* whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+docs/backend-contract-corrections.patch whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol

@@ -1,0 +1,133 @@
+@base=http://localhost:10587
+@instance=YOUR_AUTHORIZED_INSTANCE_UUID
+@token=YOUR_IN_MEMORY_FERA_AUTH_TOKEN
+@uuid=RETURNED_SESSION_CREATED_UUID
+@name=YOUR_TEMPLATE_OR_PROFILE_NAME
+@fields=ALL
+@named=YOUR_TEMPLATE_NAME
+@owner={{instance}}
+@operationId=YOUR_QUALIFIED_DELIVERY_OPERATION_ID
+
+# Review every payload. Internal and legacy routes intentionally have no execution examples.
+### Save configurations — EDIT.CONFIGURATION
+POST {{base}}/api/v1/configurations
+instance: {{instance}}
+x-auth-token: {{token}}
+Content-Type: application/json
+
+{
+  "name": "SESSION_PREFIX SMTP",
+  "host": "OPERATOR_APPROVED_SMTP_HOST",
+  "port": 587,
+  "secure": true,
+  "user": "SUPPLY_USERNAME_SECURELY",
+  "password": "SUPPLY_PASSWORD_SECURELY"
+}
+
+### Read configurations — VIEW.CONFIGURATION
+GET {{base}}/api/v1/configurations
+instance: {{instance}}
+x-auth-token: {{token}}
+
+### Read configurations — VIEW.CONFIGURATION
+GET {{base}}/api/v1/configurations/n/{{name}}
+instance: {{instance}}
+x-auth-token: {{token}}
+
+### Delete configurations — EDIT.CONFIGURATION
+DELETE {{base}}/api/v1/configurations/{{uuid}}
+instance: {{instance}}
+x-auth-token: {{token}}
+
+### Save templates — EDIT.TEMPLATE
+POST {{base}}/api/v1/templates
+instance: {{instance}}
+x-auth-token: {{token}}
+Content-Type: application/json
+
+{
+  "category": "WELCOME",
+  "name": "SESSION_PREFIX Welcome",
+  "from": "demo@example.invalid",
+  "replyTo": "",
+  "subject": "Welcome, <xsl:value-of select=\"Customer/Name\"/>",
+  "html": "<p>Hello <xsl:value-of select=\"Customer/Name\"/></p>",
+  "meta": {
+    "purpose": "Synthetic demo"
+  }
+}
+
+### Import global template — EDIT.TEMPLATE
+POST {{base}}/api/v1/templates/r/i/{{uuid}}
+instance: {{instance}}
+x-auth-token: {{token}}
+Content-Type: application/json
+
+{
+  "name": "SESSION_PREFIX Imported"
+}
+
+### Search selected template fields — VIEW.TEMPLATE
+GET {{base}}/api/v1/templates/n/{{named}}/o/{{owner}}/f/{{fields}}
+instance: {{instance}}
+x-auth-token: {{token}}
+
+### List global templates — VIEW.TEMPLATE
+GET {{base}}/api/v1/templates/g
+instance: {{instance}}
+x-auth-token: {{token}}
+
+### Read templates — VIEW.TEMPLATE
+GET {{base}}/api/v1/templates
+instance: {{instance}}
+x-auth-token: {{token}}
+
+### Read templates — VIEW.TEMPLATE
+GET {{base}}/api/v1/templates/{{uuid}}
+instance: {{instance}}
+x-auth-token: {{token}}
+
+### Delete templates — EDIT.TEMPLATE
+DELETE {{base}}/api/v1/templates/{{uuid}}
+instance: {{instance}}
+x-auth-token: {{token}}
+
+### Submit raw or template email — CAN.SEND
+POST {{base}}/api/v1/send
+instance: {{instance}}
+x-auth-token: {{token}}
+Content-Type: application/json
+
+{
+  "configuration": "APPROVED_PROFILE",
+  "from": "demo@example.invalid",
+  "to": "VERIFIED_ALLOWLIST_RECIPIENT",
+  "subject": "Synthetic example",
+  "body": "<p>Preview does not send.</p>",
+  "attachments": [],
+  "unsubscribeUrl": "https://example.invalid/preferences"
+}
+
+### Inspect send prerequisites — CAN.SEND
+GET {{base}}/api/v1/send/preflight
+instance: {{instance}}
+x-auth-token: {{token}}
+
+### Inspect qualified delivery operation — CAN.SEND
+GET {{base}}/api/v1/send/operations/{{operationId}}
+instance: {{instance}}
+x-auth-token: {{token}}
+
+### Template-based send — same route; explicit authorization and recipient verification required
+POST {{base}}/api/v1/send
+instance: {{instance}}
+x-auth-token: {{token}}
+Content-Type: application/json
+
+{
+  "configuration": "APPROVED_PROFILE",
+  "name": "SESSION_PREFIX Invoice",
+  "recipient": "VERIFIED_ALLOWLIST_RECIPIENT",
+  "xml": "<data><Customer><Name>Avery Morgan</Name></Customer><Invoice><Number>DEMO-1042</Number><Amount>$425.00</Amount><Due>November 15, 2026</Due></Invoice></data>",
+  "attachments": []
+}
